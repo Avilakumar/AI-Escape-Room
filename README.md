@@ -100,17 +100,21 @@ streamlit run app.py
 6. Enter the correct drawer code without the key.
 7. Collect the key, enter the correct drawer code, and then use the final exit code.
 
-## Architecture
+## System Architecture
 
-Version 1:
-Player -> Streamlit chat interface -> Conversation context + prompt -> Gemini Game Master -> Response -> Player
+### Version 1 – LLM-Based Game Master
 
-Version 2:
-Player -> Streamlit chat interface -> Python action recognition -> Python validation + game state -> Validated event -> Gemini narration -> Player
+Version 1 uses Google Gemini as the Game Master to interpret player actions, maintain conversation history and generate game responses.
 
-git add README.md
-git commit -m "Add architecture diagrams to README"
-git push origin main
+![Version 1 Architecture](images/version1_architecture.png)
+
+### Version 2 – Rule-Based Stateful Game Engine
+
+Version 2 uses a Python-based game engine to validate player actions, manage inventory, track puzzle progress and control game state. Gemini is used only for narration.
+
+![Version 2 Architecture](images/version2_architecture.png)
+
+For detailed architecture diagrams, see [`docs/architecture_diagrams.md`](docs/architecture_diagrams.md).
 
 ## GitHub safety
 
