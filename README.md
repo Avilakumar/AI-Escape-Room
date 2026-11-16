@@ -108,6 +108,10 @@ Player -> Streamlit chat interface -> Conversation context + prompt -> Gemini Ga
 Version 2:
 Player -> Streamlit chat interface -> Python action recognition -> Python validation + game state -> Validated event -> Gemini narration -> Player
 
+git add README.md
+git commit -m "Add architecture diagrams to README"
+git push origin main
+
 ## GitHub safety
 
 Commit `.env.example`, but never commit `.env`. The `.gitignore` file excludes it.
