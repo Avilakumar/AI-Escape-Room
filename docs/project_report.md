@@ -11,7 +11,7 @@ The game takes place in a mysterious library where the player must examine objec
 
 The project demonstrates the advantages and limitations of LLM-driven interaction compared with deterministic rule-based control. Testing was conducted through manual gameplay and automated unit tests. The final implementation combines structured game logic with AI-generated narration to provide a more reliable and engaging experience.
 
-**Keywords:** Artificial Intelligence, Large Language Models, Google Gemini, Python, Streamlit, Game Engine, State Management.
+**Keywords:** Artificial Intelligence, Large Language Models, Google Gemini, Python, Streamlit, Game Engine.
 
 ---
 
@@ -24,11 +24,12 @@ The project demonstrates the advantages and limitations of LLM-driven interactio
 5. Game Scenario and Puzzle Design  
 6. System Architecture and Design  
 7. Implementation  
-8. Testing and Results  
-9. Comparison of Version 1 and Version 2  
-10. Limitations and Future Enhancements  
-11. Conclusion  
-12. References  
+8. Development Process and Improvements
+9. Testing and Results  
+10. Comparison of Version 1 and Version 2  
+11. Limitations and Future Enhancements  
+12. Conclusion  
+13. References  
 
 ---
 
@@ -255,11 +256,44 @@ Similarly, entering the exit code **7319** unlocks the door but does not automat
 
 This approach ensures that the Python game engine controls important game outcomes rather than relying entirely on generated LLM responses.
 
-# 8. Testing and Results
+# 8. Development Process and Improvements
+
+## 8.1 Challenges Identified in Version 1
+
+Version 1 used Google Gemini as the Game Master to interpret player actions and generate responses. Although this approach enabled flexible natural-language interaction, relying entirely on the LLM for game progression introduced some challenges:
+
+- Game responses could be inconsistent between interactions.
+- The model could potentially accept actions without verifying all puzzle prerequisites.
+- Inventory and puzzle progression were primarily represented through conversational context.
+- It was difficult to guarantee that players followed the intended puzzle sequence.
+- AI-generated responses alone could not guarantee deterministic game outcomes.
+
+## 8.2 Improvements Introduced in Version 2
+
+To address these challenges, Version 2 introduced a separate Python-based stateful game engine.
+
+The main improvements were:
+
+- **Explicit state management:** Python dictionaries track inventory, examined objects and puzzle progress.
+- **Action validation:** Player actions are checked against predefined rules.
+- **Prerequisite enforcement:** The drawer combination is accepted only when the player has the required key and has examined the painting and bookshelf.
+- **Invalid-action handling:** Incorrect codes and actions are rejected without incorrectly changing the game state.
+- **Controlled game progression:** Unlocking the exit and completing the escape are treated as separate actions.
+- **Separation of responsibilities:** Python manages game rules, while Gemini generates narrative responses.
+
+## 8.3 Reason for the Improvements
+
+The main reason for developing Version 2 was to improve reliability and control over game progression without losing the conversational benefits of AI.
+
+By separating deterministic game logic from AI-generated narration, the application became more predictable and easier to test.
+
+This development process demonstrates the transition from an LLM-driven prototype to a more structured and reliable interactive application.
+
+# 9. Testing and Results
 
 Testing was conducted to verify the application's functionality, puzzle logic and handling of invalid actions.
 
-## 8.1 Manual Testing
+## 9.1 Manual Testing
 
 | Test ID | Test Scenario | Expected Result |
 |---|---|---|
@@ -273,7 +307,7 @@ Testing was conducted to verify the application's functionality, puzzle logic an
 | MT-08 | Enter 7319 | Exit door becomes unlocked |
 | MT-09 | Open the unlocked exit door | Escape is completed |
 
-## 8.2 Automated Testing
+## 9.2 Automated Testing
 
 Automated tests were implemented using Python's `unittest` framework.
 
@@ -290,13 +324,13 @@ The test suite verifies important game-engine behaviours, including:
 
 **Test Result:** The implemented automated test suite completed successfully with **8 tests passing**.
 
-## 8.3 Testing Outcome
+## 9.3 Testing Outcome
 
 The testing demonstrated that Version 1 supports conversational gameplay, while Version 2 provides more predictable and controlled puzzle progression through explicit validation.
 
 The separation of game logic from AI narration helps prevent incorrect actions from changing the actual game state.
 
-# 9. Comparison of Version 1 and Version 2
+# 10. Comparison of Version 1 and Version 2
 
 | Evaluation Criteria | Version 1 | Version 2 |
 |---|---|---|
@@ -311,9 +345,9 @@ The separation of game logic from AI narration helps prevent incorrect actions f
 
 Version 1 focuses on flexibility and conversational interaction. Version 2 focuses on reliable execution, explicit state tracking and consistent enforcement of puzzle rules.
 
-# 10. Limitations and Future Enhancements
+# 11. Limitations and Future Enhancements
 
-## 10.1 Current Limitations
+## 11.1 Current Limitations
 
 - The game currently contains a single library environment.
 - The number of puzzles and interactive objects is limited to the implemented scenario.
@@ -321,7 +355,7 @@ Version 1 focuses on flexibility and conversational interaction. Version 2 focus
 - Version 2 requires predefined rules for supported game actions.
 - Gemini API availability and usage limits can affect AI-generated narration.
 
-## 10.2 Future Enhancements
+## 11.2 Future Enhancements
 
 Possible improvements include:
 
@@ -334,7 +368,7 @@ Possible improvements include:
 7. Supporting more complex interactions between objects.
 8. Improving AI narration using structured game-state context.
 
-# 11. Conclusion
+# 12. Conclusion
 
 The AI-Powered Escape Room demonstrates how Large Language Models can be integrated into an interactive application and combined with traditional software engineering techniques.
 
@@ -344,7 +378,7 @@ The implementation and testing demonstrate that separating deterministic game lo
 
 Overall, the project provides a practical example of combining Artificial Intelligence, Python programming, state management and interactive application development to create an engaging and reliable game experience.
 
-# 12. References
+# 13. References
 
 1. Google. (n.d.). *Gemini API Documentation*. https://ai.google.dev/gemini-api/docs
 2. Streamlit. (n.d.). *Streamlit Documentation*. https://docs.streamlit.io/
