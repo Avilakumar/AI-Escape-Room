@@ -3,10 +3,6 @@
 ### ⚙️ Stateful Rule-Based Game Engine with AI Narration
 
 <p align="center">
-  <img src="../images/version2_architecture.png" alt="Version 2 Architecture Diagram" width="850"/>
-</p>
-
-<p align="center">
   <b>A deterministic escape room powered by Python game logic and Google Gemini narration.</b>
 </p>
 
@@ -72,21 +68,58 @@ The player must find the brass key, examine the painting and bookshelf, unlock t
 
 </details>
 
+
 ## 🏗️ 5. System Architecture
 
-The architecture diagram above illustrates the workflow of Version 2.
+The following diagram illustrates the hybrid Python and LLM architecture of Version 2. Python controls action validation and game progression, while Google Gemini generates narration for validated events.
 
-The system follows a hybrid Python and LLM architecture:
+```mermaid
+flowchart LR
+    A["👤 Player"] --> B["🌐 Streamlit UI"]
+    B --> C["🐍 app_v2.py"]
+    C --> D["⚙️ game_engine.py"]
+    D --> E["🔍 Action Recognition"]
+    E --> F["✅ Rule Validation"]
+    F --> G{"Valid Action?"}
 
-1. **Player Input:** The player submits an action through the Streamlit interface.
-2. **Action Processing:** Python receives and processes the player's instruction.
-3. **Rule Validation:** The game engine checks the action against predefined conditions.
-4. **Game State Update:** If the action is valid, the engine updates the inventory, discovered objects and puzzle progress.
-5. **AI Narration:** The validated event and current game state are passed to Google Gemini.
-6. **Response Generation:** Gemini generates contextual narration based on the validated event.
-7. **Interface Update:** Streamlit displays the response and the updated game state.
+    G -- No --> H["❌ Error Response"]
+    H --> B
 
-**Main concept:** Python controls the game rules and progression, while the LLM is responsible for conversational narration rather than deciding whether an action is valid.
+    G -- Yes --> I["📊 Update Game State"]
+    I --> J["🎒 Inventory & Puzzle Progress"]
+    J --> K["📝 Build Narration Prompt"]
+    K --> L["🤖 Google Gemini API"]
+    L --> M["🎮 Game Master Narration"]
+    M --> B
+
+    style A fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style B fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style C fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style D fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style E fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style F fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style G fill:#fef3c7,stroke:#d97706,color:#78350f
+    style H fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+    style I fill:#dcfce7,stroke:#16a34a,color:#14532d
+    style J fill:#dcfce7,stroke:#16a34a,color:#14532d
+    style K fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style L fill:#dcfce7,stroke:#16a34a,color:#14532d
+    style M fill:#fef3c7,stroke:#d97706,color:#78350f
+```
+
+### Architecture Explanation
+
+1. **Player:** Submits an action through the interface.
+2. **Streamlit UI:** Receives the player's input.
+3. **app_v2.py:** Passes the action to the game engine.
+4. **game_engine.py:** Processes and validates the action.
+5. **Action Recognition:** Identifies the requested game operation.
+6. **Rule Validation:** Checks whether the action satisfies predefined conditions.
+7. **Valid Action Decision:** Rejects invalid actions or allows valid actions to continue.
+8. **Game State Update:** Updates inventory, discovered objects and puzzle progress.
+9. **Build Narration Prompt:** Prepares the validated event and game state for Gemini.
+10. **Google Gemini API:** Generates contextual narration.
+11. **Game Master Narration:** Returns the response to the player through Streamlit.
 
 ## ⚙️ 6. Game State Management
 

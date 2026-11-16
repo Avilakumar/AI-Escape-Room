@@ -3,10 +3,6 @@
 ### 🤖 LLM-Based Interactive Game Master
 
 <p align="center">
-  <img src="../images/version1_architecture.png" alt="Version 1 Architecture Diagram" width="850"/>
-</p>
-
-<p align="center">
   <b>An interactive escape room powered by Google Gemini and Python.</b>
 </p>
 
@@ -68,19 +64,39 @@ The player must find the brass key, solve the painting and bookshelf clues, unlo
 
 </details>
 
+
 ## 🏗️ 5. System Architecture
 
-The architecture diagram above illustrates the workflow of Version 1.
+The following diagram illustrates the LLM-based architecture of Version 1. The Large Language Model acts as the Game Master, interpreting player actions and generating contextual responses while maintaining conversation history.
 
-The system follows an LLM-driven architecture:
+```mermaid
+flowchart LR
+    A["👤 Player"] --> B["🌐 Streamlit UI"]
+    B --> C["🐍 app_v1.py"]
+    C --> D["💬 Conversation History"]
+    D --> E["📋 System Prompt"]
+    E --> F["🤖 Google Gemini API"]
+    F --> G["🎮 Game Master Response"]
+    G --> B
 
-1. **Player Input:** The player submits an action through the Streamlit interface.
-2. **Application Layer:** Python receives the input and combines it with the system instructions and conversation history.
-3. **LLM Processing:** Google Gemini interprets the player's action and generates a contextual response.
-4. **Response Generation:** The AI Game Master responds with clues, hints or feedback.
-5. **Conversation Memory:** The interaction is stored in session history to maintain context during the game.
+    style A fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style B fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style C fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style D fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style E fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    style F fill:#dcfce7,stroke:#16a34a,color:#14532d
+    style G fill:#fef3c7,stroke:#d97706,color:#78350f
+```
 
-**Main concept:** The LLM handles most of the interpretation and progression of the gameplay, making the experience flexible and conversational.
+### Architecture Explanation
+
+1. **Player:** Enters natural-language instructions.
+2. **Streamlit UI:** Receives and displays player interactions.
+3. **app_v1.py:** Processes the input and manages the interaction.
+4. **Conversation History:** Maintains previous messages for context.
+5. **System Prompt:** Provides the Game Master's instructions and rules.
+6. **Google Gemini API:** Interprets the player's action and generates a response.
+7. **Game Master Response:** Returns contextual feedback to the player.
 
 ## 🛠️ 6. Technology Stack
 
