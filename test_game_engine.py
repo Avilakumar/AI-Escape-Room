@@ -34,24 +34,46 @@ class EscapeRoomEngineTests(unittest.TestCase):
         self.assertNotIn("final_code_note", state["inventory"])
         self.assertIn("painting and the bookshelf", result["event"])
 
-    def test_full_sequence_unlocks_then_requires_open_action(self):
+    def test_full_sequence_requires_reading_note_before_exit(self):
         state = new_game_state()
+
         act(state, "Examine the desk")
         act(state, "Look at the painting")
         act(state, "Examine the bookshelf")
+
         result = act(state, "Enter code 4826 at drawer")
+
         self.assertTrue(state["drawer_open"])
         self.assertIn("final_code_note", state["inventory"])
-        self.assertIn("SUCCESS", result["event"])
+        self.assertNotIn("7319", result["event"])
 
+        # Exit code must be rejected before reading the note
+        result = act(state, "Enter 7319 at exit door")
+        self.assertFalse(state["door_unlocked"])
+        self.assertIn("ACCESS DENIED", result["event"])
+
+        # Reading the note reveals the final code
+        result = act(state, "Read the note")
+        self.assertTrue(state["final_note_read"])
+        self.assertIn("7319", result["event"])
+
+        # Correct exit code unlocks, but does not escape
         result = act(state, "Enter 7319 at exit door")
         self.assertTrue(state["door_unlocked"])
         self.assertFalse(state["escaped"])
-        self.assertIn("must now open", result["event"])
 
+        # Separate action completes the escape
         result = act(state, "Open the door")
         self.assertTrue(state["escaped"])
         self.assertIn("escape", result["event"].lower())
+        
+    def test_cannot_read_note_before_opening_drawer(self):
+        state = new_game_state()
+
+        result = act(state, "Read the note")
+
+        self.assertFalse(state["final_note_read"])
+        self.assertNotIn("7319", result["event"])
 
     def test_exit_code_without_final_note_is_rejected(self):
         state = new_game_state()
@@ -79,16 +101,23 @@ class EscapeRoomEngineTests(unittest.TestCase):
         self.assertIn("still locked", result["event"])
 
     def test_cannot_escape_twice(self):
-        state = new_game_state()
+        state = new_game_state() 
         act(state, "Examine the desk")
         act(state, "Look at the painting")
         act(state, "Examine the bookshelf")
+        
         act(state, "Enter 4826 at drawer")
+# The player must read the note before entering the exit code.
+        act(state, "Read the note")
         act(state, "Enter 7319 at exit")
         act(state, "Open the exit door")
+
+    # Attempting to escape again should not change the completed state.
         result = act(state, "Open the door")
+
+
         self.assertTrue(state["escaped"])
-        self.assertIn("already escaped", result["event"])
+        self.assertIn("already escaped", result["event"].lower())
 
 
 if __name__ == "__main__":
