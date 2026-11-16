@@ -111,3 +111,22 @@ Player -> Streamlit chat interface -> Python action recognition -> Python valida
 ## GitHub safety
 
 Commit `.env.example`, but never commit `.env`. The `.gitignore` file excludes it.
+
+## Screenshots
+
+### Version 1 – AI Game Master
+![Version 1 Gameplay](screenshots/01_version1_gameplay.png)
+
+### Version 2 – Reliable Game Engine
+![Version 2 Gameplay](screenshots/02_version2_gameplay.png)
+
+### Version 2 – Testing
+
+![Wrong Code Rejected](screenshots/03_wrong_code_rejected.png)
+
+![Correct Code Accepted](screenshots/04_correct_code_accepted.png)
+
+![Successful Escape](screenshots/05_successful_escape.png)
+
+### Automated Tests
+![Automated Tests](screenshots/06_automated_tests.png)
